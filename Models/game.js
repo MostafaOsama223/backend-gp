@@ -1,36 +1,30 @@
+const sequelize = require('../Utils/database');
 const { DataTypes } = require('sequelize');
-const sequelize = require("../Utils/database");
-const Level = require('./level');
+const Injury = require('./Injury');
 
-const Game = sequelize.define('Game', {
-
+const Game = sequelize.define('Game',{
     gameId: {
         type: DataTypes.SMALLINT,
-        autoIncrement: true,
+        primaryKey: true,
         allowNull: false,
-        primaryKey: true
+        autoIncrement: true,
     },
 
     gameName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
 
     gameUrl: {
         type: DataTypes.STRING,
-        allowNull: true,
-    },
-}, {
-    freezeTableName: true,
-    timestamps: false
-});
-
-Game.hasMany(Level, {
-    foreignKey:{
-        name:'gameId',
         allowNull: false
-    }
+    },
+},{
+    freezeTableName: true,
+    timestamps: false,
 });
 
+Game.hasOne(Injury);
+Injury.belongsTo(Game);
 
 module.exports = Game;
