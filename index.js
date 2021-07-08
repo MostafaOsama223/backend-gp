@@ -1,5 +1,7 @@
 const sequelize = require('./Utils/database');
 const Injury = require('./Models/Injury');
+const Game = require('./Models/Game');
+const Level = require('./Models/Level');
 
 sequelize.authenticate()
     .then(res => { console.log("db connected"); main() })
@@ -9,7 +11,7 @@ sequelize.authenticate()
 function main() {
 
     sequelize.sync({
-        force: false
+        force: true
     });
 
 }
