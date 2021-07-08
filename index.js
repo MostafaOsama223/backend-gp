@@ -15,3 +15,6 @@ function main() {
     });
 
 }
+
+    //User.hasOne(Project);
+    //Project.belongsTo(User);
