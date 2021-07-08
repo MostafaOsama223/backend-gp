@@ -1,21 +1,37 @@
-const sequelize = require('../Utils/database');
+const { DataTypes } = require('sequelize');
+const sequelize = require("../Utils/database")
 
-const DOC = sequelize.define('Doctor', {
-    Doctor_id: {
-
-        type: Sequelize.INTEGER,
+const Doctor = sequelize.define('Doctor', {
+    doctorId: {
+        type: DataTypes.SMALLINT,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    name: { type: Sequelize.STRING, allowNull: false },
-    email: { type: Sequelize.STRING, allowNull: false },
-    phone: { type: Sequelize.INTEGER, allowNull: false },
-    Patients_no: { type: Sequelize.INTEGER, allowNull: false },
 
-},{
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
+    phone: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+
+    patientsNo: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+
+}, {
     freezeTableName: true,
     timestamps: false
 });
 
-module.exports = DOC ;
+module.exports = Doctor;

@@ -1,20 +1,36 @@
-const { sequelize } = require("../Utils/database")
+const { DataTypes } = require('sequelize');
+const sequelize = require("../Utils/database");
+const Level = require('./level');
 
 const Game = sequelize.define('Game', {
-        
-    Game_id:{
- 
-       type:Sequelize.INTEGER,
-       autoIncrement:true,
-       allowNull:false,
-       primaryKey:true
-    },
- 
-    Game_name: { type: Sequelize.STRING, allowNull:false },
-    URL: { type :sequelize.STRING , allowNull : true} ,
 
-    },{
-        freezeTableName:true, 
-        timestamps:false 
-    });
-module.exports = Game ;
+    gameId: {
+        type: DataTypes.SMALLINT,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true
+    },
+
+    gameName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
+    gameUrl: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+}, {
+    freezeTableName: true,
+    timestamps: false
+});
+
+Game.hasMany(Level, {
+    foreignKey:{
+        name:'gameId',
+        allowNull: false
+    }
+});
+
+
+module.exports = Game;
