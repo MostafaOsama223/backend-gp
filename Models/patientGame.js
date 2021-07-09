@@ -1,20 +1,17 @@
-const {
-    DataTypes
-} = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require("../Utils/database")
 
-const Progress = sequelize.define('Progress', {
+const PatientGame = sequelize.define('PatientGame', {
 
-    patientId: {
-        type: DataTypes.SMALLINT,
+    patientGameId: {
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-
 }, {
     freezeTableName: true,
     timestamps: false
-})
+});
 
-module.exports = Progress;
+module.exports = PatientGame;

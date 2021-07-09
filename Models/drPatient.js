@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../Utils/database")
 
-const Doctor = sequelize.define('Doctor', {
-    doctorId: {
+const DrPatient = sequelize.define('DrPatient', {
+
+    patientId: {
         type: DataTypes.SMALLINT,
         autoIncrement: true,
         allowNull: false,
@@ -24,14 +25,13 @@ const Doctor = sequelize.define('Doctor', {
         allowNull: false
     },
 
-    patientsNo: {
+    doctorId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
 
 }, {
     freezeTableName: true,
-    timestamps: false
+    timestamps: false,
 });
-
-module.exports = Doctor;
+module.exports = DrPatient;

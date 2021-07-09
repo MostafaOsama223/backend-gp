@@ -1,20 +1,30 @@
-const { sequelize } = require("../Utils/database")
+const sequelize = require('../Utils/database');
+const { DataTypes } = require('sequelize');
+const Injury = require('./Injury');
 
-const Game = sequelize.define('Game', {
-        
-    Game_id:{
- 
-       type:sequelize.INTEGER,
-       autoIncrement:true,
-       allowNull:false,
-       primaryKey:true
+const Game = sequelize.define('Game',{
+    gameId: {
+        type: DataTypes.SMALLINT,
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true,
     },
- 
-    Game_name: { type: sequelize.STRING, allowNull:false },
-    URL: { type :sequelize.STRING , allowNull : true} ,
 
-    },{
-        freezeTableName:true, 
-        timestamps:false 
-    });
-module.exports = Game ;
+    gameName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
+    gameUrl: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+},{
+    freezeTableName: true,
+    timestamps: false,
+});
+
+Game.hasOne(Injury);
+Injury.belongsTo(Game);
+
+module.exports = Game;
