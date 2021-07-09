@@ -4,7 +4,7 @@ const progress = sequelize.define('Progress_level', {
 
     Patient_id:{
  
-       type:Sequelize.INTEGER,
+       type:sequelize.INTEGER,
        autoIncrement:true,
        allowNull:false,
        primaryKey:true

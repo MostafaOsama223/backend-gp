@@ -1,10 +1,10 @@
 const{sequelize}= require("../Utils/database")
 
-const Patient_game = sequelize.define('Patient_game', {
+const patientGame = sequelize.define('Patient_game', {
         
-    PatientGame_id:{
+    PatientGameId:{
  
-       type:Sequelize.INTEGER,
+       type:sequelize.INTEGER,
        autoIncrement:true,
        allowNull:false,
        primaryKey:true
@@ -14,4 +14,4 @@ const Patient_game = sequelize.define('Patient_game', {
         timestamps:false 
     });
 
-module.exports = Patient_game ;
+module.exports = patientGame ;

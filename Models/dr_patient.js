@@ -9,10 +9,10 @@ const DR_Patient = sequelize.define('DR_Patient', {
        allowNull:false,
        primaryKey:true
     },
-    name:  { type: Sequelize.STRING, allowNull:false },
-    email: { type: Sequelize.STRING, allowNull:false } ,
-    phone: { type: Sequelize.INTEGER, allowNull:false } ,
-    Doctor_ID :{type: Sequelize.INTEGER, allowNull:false},
+    name:  { type: sequelize.STRING, allowNull:false },
+    email: { type: sequelize.STRING, allowNull:false } ,
+    phone: { type: sequelize.INTEGER, allowNull:false } ,
+    Doctor_ID :{type: sequelize.INTEGER, allowNull:false},
  
     },{
         freezeTableName:true, 

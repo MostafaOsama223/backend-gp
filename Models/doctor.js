@@ -1,6 +1,6 @@
 const sequelize = require('../Utils/database');
 
-const DOC = sequelize.define('Doctor', {
+const Doctor = sequelize.define('Doctor', {
     Doctor_id: {
 
         type: Sequelize.INTEGER,
@@ -8,14 +8,14 @@ const DOC = sequelize.define('Doctor', {
         allowNull: false,
         primaryKey: true
     },
-    name: { type: Sequelize.STRING, allowNull: false },
-    email: { type: Sequelize.STRING, allowNull: false },
-    phone: { type: Sequelize.INTEGER, allowNull: false },
-    Patients_no: { type: Sequelize.INTEGER, allowNull: false },
+    name: { type: sequelize.STRING, allowNull: false },
+    email: { type: sequelize.STRING, allowNull: false },
+    phone: { type: sequelize.INTEGER, allowNull: false },
+    Patients_no: { type: sequelize.INTEGER, allowNull: false },
 
 },{
     freezeTableName: true,
     timestamps: false
 });
 
-module.exports = DOC ;
+module.exports = Doctor ;
