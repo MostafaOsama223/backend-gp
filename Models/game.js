@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 const Injury = require('./Injury');
 
 const Game = sequelize.define('Game',{
-    gameId: {
+    Id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
         allowNull: false,
@@ -24,7 +24,8 @@ const Game = sequelize.define('Game',{
     timestamps: false,
 });
 
-Game.hasOne(Injury);
-Injury.belongsTo(Game);
+Game.belongsToMany(Injury,{
+    through : "gameInjury"
+});
 
 module.exports = Game;

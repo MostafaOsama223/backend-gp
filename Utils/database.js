@@ -2,7 +2,7 @@ const {
     Sequelize
 } = require('sequelize');
 
-const sequelize = new Sequelize('mysql://root:@localhost:3306/game_db');
+const sequelize = new Sequelize('mysql://root:@localhost:3306/users');
 const path = require('path');
 const modelsPath = path.join(require('app-root-path').path, 'Models');
 
@@ -20,6 +20,9 @@ const modelsPath = path.join(require('app-root-path').path, 'Models');
 function initializeDB() {
     require('fs').readdirSync(modelsPath).forEach(fileName => {
         require(`${modelsPath}/${fileName}`);
+    });
+    sequelize.sync({
+        force: false
     });
 }
 
