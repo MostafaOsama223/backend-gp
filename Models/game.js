@@ -1,6 +1,7 @@
 const sequelize = require('../Utils/database');
 const { DataTypes } = require('sequelize');
 const Injury = require('./Injury');
+const Patient = require('./patient')
 
 const Game = sequelize.define('Game',{
     Id: {
@@ -26,6 +27,10 @@ const Game = sequelize.define('Game',{
 
 Game.belongsToMany(Injury,{
     through : "gameInjury"
+});
+
+Game.belongsToMany(Patient,{
+    through : "gamePatient"
 });
 
 module.exports = Game;

@@ -3,7 +3,7 @@ const sequelize = require("../Utils/database");
 const Game = require('./game');
 
 const Level = sequelize.define('Level', {
-    levelId: {
+    Id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
         allowNull: false,
@@ -35,6 +35,8 @@ const Level = sequelize.define('Level', {
     timestamps: false,
 });
 
-
+Level.belongsTo(Game,{
+    foreignKey:"gameId",allowNull:false
+});
 
 module.exports = Level;

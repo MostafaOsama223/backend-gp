@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../Utils/database");
 const Doctor = require('./doctor');
-const Injury = require('./Injury');
+const Injury = require('./injury');
 
 const Patient = sequelize.define('Patient', {
 
@@ -26,22 +26,18 @@ const Patient = sequelize.define('Patient', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-
-    doctorId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-
 }, {
     freezeTableName: true,
     timestamps: false
 });
 
+
 Patient.belongsTo(Doctor,{
     foreignKey:"doctorId",allowNull:false
 });
-/*
-Patient.belongsTo(Injury,{
-    foreignKey:"injuryId",allowNull:false
-});*/
+
+Patient.belongsToMany(Injury,{
+    through:"patientInjury"
+});
+
 module.exports = Patient;
