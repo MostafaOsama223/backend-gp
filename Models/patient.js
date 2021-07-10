@@ -5,7 +5,7 @@ const Injury = require('./injury');
 
 const Patient = sequelize.define('Patient', {
 
-    patientId: {
+    id: {
         type: DataTypes.SMALLINT,
         autoIncrement: true,
         allowNull: false,
@@ -37,7 +37,8 @@ Patient.belongsTo(Doctor,{
 });
 
 Patient.belongsToMany(Injury,{
-    through:"patientInjury"
+    through:"PatientInjury",
+    timestamps: false
 });
 
 module.exports = Patient;

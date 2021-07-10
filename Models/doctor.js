@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require("../Utils/database")
 
 const Doctor = sequelize.define('Doctor', {
-    doctorId: {
+    id: {
         type: DataTypes.SMALLINT,
         autoIncrement: true,
         allowNull: false,
@@ -24,10 +24,10 @@ const Doctor = sequelize.define('Doctor', {
         allowNull: false
     },
 
-    patientsNo: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
+    // patientsNo: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false
+    // },
 
 }, {
     freezeTableName: true,

@@ -3,21 +3,11 @@ const sequelize = require("../Utils/database");
 const Game = require('./game');
 
 const Level = sequelize.define('Level', {
-    Id: {
+    id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
-    },
-
-    timeSpent: {
-        type: DataTypes.TIME,
-        allowNull: false,
-    },
-
-    score: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
     },
 
     maxScore: {
@@ -36,7 +26,8 @@ const Level = sequelize.define('Level', {
 });
 
 Level.belongsTo(Game,{
-    foreignKey:"gameId",allowNull:false
+    foreignKey:"gameId",
+    allowNull:false
 });
 
 module.exports = Level;

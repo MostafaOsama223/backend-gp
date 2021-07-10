@@ -4,19 +4,19 @@ const Injury = require('./Injury');
 const Patient = require('./patient')
 
 const Game = sequelize.define('Game',{
-    Id: {
+    id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
     },
 
-    gameName: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    gameUrl: {
+    url: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -26,11 +26,13 @@ const Game = sequelize.define('Game',{
 });
 
 Game.belongsToMany(Injury,{
-    through : "gameInjury"
+    through : "GameInjury",
+    timestamps: false
 });
 
 Game.belongsToMany(Patient,{
-    through : "gamePatient"
+    through : "GamePatient",
+    timestamps: false
 });
 
 module.exports = Game;
