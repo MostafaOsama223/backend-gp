@@ -1,5 +1,24 @@
 require('dotenv').config();
 const sequelize = require('./Utils/database') ;
+const express = require('express')
+
+
+const app = express();
+const port = 3000 ;
+
+const data =[]
+
+const server = app.listen(port , ()=>{
+    console.log(`server is connected on port :: ${port}`);
+})
+
+app.post('/rec',(req,res)=>{
+    console.log("i recieved some data");
+    console.log(req.query);
+    res.send("recieved");
+})
+
+
 
 /*
 (() => {
