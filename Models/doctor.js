@@ -34,4 +34,14 @@ const Doctor = sequelize.define('Doctor', {
     timestamps: false
 });
 
-module.exports = Doctor;
+function createDoctor( doctor ){    
+    Doctor.create({
+        name  : doctor.name ,
+        email : doctor.email,
+        phone : doctor.phone
+
+    })   
+}
+
+module.exports.Doctor = Doctor;
+module.exports.createDoctor = createDoctor;

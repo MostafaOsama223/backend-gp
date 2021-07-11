@@ -1,30 +1,40 @@
 require('dotenv').config();
 const sequelize = require('./Utils/database') ;
 const express = require('express')
+const bodyparser = require('body-parser');
+const {createDoctor} = require('./Models/doctor');
+const {createPatient} = require('./Models/patient')
+const {createInjury} = require('./Models/injury')
 
 
 const app = express();
-const port = 3000 ;
+app.use(bodyparser.urlencoded({extended:false}));
+app.use(bodyparser.json());
 
-const data =[]
+
+const port = 3000 ;
+const data =[] ;
 
 const server = app.listen(port , ()=>{
     console.log(`server is connected on port :: ${port}`);
 })
 
-app.post('/rec',(req,res)=>{
-    console.log("i recieved some data");
-    console.log(req.query);
+app.post('/doctor',(req,res)=>{
+   
+    console.log("i recieved doctor data");
     res.send("recieved");
+    createDoctor(req.body);
+
 })
+ app.post('/patient',(req,res)=>{
+    console.log("i recieved patient data");
+    res.send("recieved");
+    createPatient(req.body)
+ })
 
+ app.post('/injury',(req,res)=>{
+     console.log("i recieved new injury data")
+     res.send("recieved");
+     createInjury(req.body);
+ })
 
-
-/*
-(() => {
-    
-    // Game.create({gameName: "game1", gameUrl: 'xxxx'})
-    // Level.create({timeSpent: '25:16:20', score: 32, maxScore: 30, difficulty: 'easy', gameId: 1})
-
-})();
-*/

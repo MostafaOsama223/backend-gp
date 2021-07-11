@@ -25,10 +25,10 @@ function initializeDB() {
     });
 
     sequelize.sync({
-        force: false
+        force: true
     });
 
-    insertDummyData();
+    //insertDummyData();
 }
 
 function insertDummyData(){

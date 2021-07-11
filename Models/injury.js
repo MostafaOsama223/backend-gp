@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../Utils/database");
-const Patient = require('./patient');
 
 const Injury = sequelize.define('Injury', {
     id: {
@@ -18,4 +17,11 @@ const Injury = sequelize.define('Injury', {
     timestamps: false
 });
 
-module.exports = Injury;
+function createInjury( injury ){
+    Injury.create({
+        name : injury.name,
+    })
+}
+
+module.exports.Injury = Injury;
+module.exports.createInjury =  createInjury;

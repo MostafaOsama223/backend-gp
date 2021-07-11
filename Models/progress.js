@@ -3,7 +3,7 @@ const {
 } = require('sequelize');
 const sequelize = require("../Utils/database");
 const Level = require('./level');
-const Patient = require('./patient');
+const {Patient} = require('./patient');
 
 const Progress = sequelize.define('Progress', {
 
