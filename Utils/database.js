@@ -3,7 +3,7 @@ const {
 } = require('sequelize');
 
 const sequelize = new Sequelize('mysql://root:@localhost:3306/users', {
-    logging: false
+    logging: true
 });
 const path = require('path');
 const modelsPath = path.join(require('app-root-path').path, 'Models');
@@ -26,8 +26,9 @@ function initializeDB() {
 
     sequelize.sync({
         force: true
-    });
-
+    }).then(()=>{
+        console.log("database and tables created !")
+    })
     //insertDummyData();
 }
 

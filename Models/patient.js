@@ -44,36 +44,36 @@ Patient.belongsToMany(Injury,{
 
 /* ---------------------------- patient creation ---------------------- */
 
-function createPatient(patientI){
+async function createPatient(patientI){
 
-    const injuryType = injuryKind(patientI.injury)
-    console.log("the kind of injury is : ",injuryType);
+    let injury_ID = await getInjuryId(patientI.injury);
+        console.log("The type of injury is :", injury_ID);
+        const patient = await Patient.create({
 
-    Patient.create({
+            name    : patientI.name ,
+            email   : patientI.email,
+            phone   : patientI.phone,
+            doctorId: patientI.doctorId
+    
+        })
+    
+    //console.log("osama",patient);
+    let patient_ID = await getpatientId(patientI.phone)
+    console.log("The id of patient is : ", patient_ID);
 
-        name    : patientI.name ,
-        email   : patientI.email,
-        phone   : patientI.phone,
-        doctorId: patientI.doctorId
-
-    })
-
-    //const patient_ID = patientID(patientI.phone)
-    //console.log("The id of patient is : ",patient_ID);
-    /*
     sequelize.models.PatientInjury.create({
-        patientId: patient_ID.dataValues.id ,
-        injuryId : injuryType.dataValues.id
-    })*/
+        InjuryId  : injury_ID ,
+        PatientId: patient_ID 
+    })
 }
 
-/*async function patientID(phone){
-    return await Patient.findOne({ where: { phone: phone } });
-}*/
-async function injuryKind(injury){
-    let  x = await Injury.findOne({ where: { name: injury } });
-    console.log("data :: ",x.dataValues.id)
-    return x.dataValues.id
+async function getpatientId(phone){
+    let patient =  await Patient.findOne({ where: { phone: phone } });
+    return patient.id
+}
+async function getInjuryId(injury){
+    let  injuryId = await Injury.findOne({ where: { name: injury } });
+    return injuryId.id
 }
 
 module.exports.Patient = Patient  ;
