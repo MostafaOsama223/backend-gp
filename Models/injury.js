@@ -1,27 +1,40 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require("../Utils/database");
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Injury extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
 
-const Injury = sequelize.define('Injury', {
-    id: {
-        type: DataTypes.SMALLINT,
-        primaryKey: true,
-        allowNull:false,
-        autoIncrement: true
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
+     static createInjury( injury ){
+      this.create({
+          name : injury.name,
+      })
+  }
+    static associate({ Game, Patient }) {
+      // define association here
+
+      this.belongsToMany(Game, {
+        through: "GameInjury",
+        timestamps: false
+      })
+
+      this.belongsToMany(Patient, {
+        through:"PatientInjury",
+        timestamps: false
+      })
     }
-}, {
-    freezeTableName: true,
+  };
+  Injury.init({
+    name: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Injury',
     timestamps: false
-});
-
-function createInjury( injury ){
-    Injury.create({
-        name : injury.name,
-    })
-}
-
-module.exports.Injury = Injury;
-module.exports.createInjury =  createInjury;
+  });
+  return Injury;
+};

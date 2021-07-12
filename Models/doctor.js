@@ -1,47 +1,48 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require("../Utils/database")
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Doctor extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static createDoctor( doctor ){    
+      this.create({
+          name  : doctor.name ,
+          email : doctor.email,
+          phone : doctor.phone
+  
+      })   
+    }
 
-const Doctor = sequelize.define('Doctor', {
-    id: {
-        type: DataTypes.SMALLINT,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
+    static associate({ Patient }) {
+      // define association here
 
+      this.hasMany(Patient, {
+        foreignKey: 'doctorId',
+      })
+    }
+  };
+  Doctor.init({
     name: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-
     email: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
-
     phone: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-
-    // patientsNo: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false
-    // },
-
-}, {
-    freezeTableName: true,
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
+  }, {
+    sequelize,
+    modelName: 'Doctor',
     timestamps: false
-});
-
-function createDoctor( doctor ){    
-    Doctor.create({
-        name  : doctor.name ,
-        email : doctor.email,
-        phone : doctor.phone
-
-    })   
-}
-
-module.exports.Doctor = Doctor;
-module.exports.createDoctor = createDoctor;
+  });
+  return Doctor;
+};

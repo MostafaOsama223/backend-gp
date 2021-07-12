@@ -1,46 +1,26 @@
+'use strict';
 const {
-    DataTypes
+  Model
 } = require('sequelize');
-const sequelize = require("../Utils/database");
-const Level = require('./level');
-const {Patient} = require('./patient');
-
-const Progress = sequelize.define('Progress', {
-
-    id: {
-        type: DataTypes.SMALLINT,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-
-    score: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-    },
-
-    timeSpent: {
-        type: DataTypes.TIME,
-        allowNull: false,
-    },
-
-}, {
-    freezeTableName: true,
+module.exports = (sequelize, DataTypes) => {
+  class Progress extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  };
+  Progress.init({
+    score: DataTypes.SMALLINT,
+    timeSpent: DataTypes.TIME
+  }, {
+    sequelize,
+    modelName: 'Progress',
     timestamps: false,
-})
-
-Progress.belongsTo(Patient, {
-    foreignKey: {
-        name: 'patientId',
-        allowNull: false
-    }
-});
-
-Progress.belongsTo(Level, {
-    foreignKey: {
-        name: 'levelId',
-        allowNull: false
-    }
-});
-
-module.exports = Progress;
+    underscored: true,
+  });
+  return Progress;
+};

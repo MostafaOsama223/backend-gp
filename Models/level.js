@@ -1,33 +1,30 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require("../Utils/database");
-const Game = require('./game');
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Level extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate({ Game }) {
+      // define association here
 
-const Level = sequelize.define('Level', {
-    id: {
-        type: DataTypes.SMALLINT,
-        primaryKey: true,
-        allowNull: false,
-        autoIncrement: true
-    },
-
-    maxScore: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-
-    difficulty: {
-        type: DataTypes.STRING,
-        values: ['easy', 'medium', 'hard'],
-        allowNull: false,   
+      this.belongsTo(Game, {
+        foreignKey:"gameId"
+      })
     }
-},{
-    freezeTableName: true,
+  };
+  Level.init({
+    maxScore: DataTypes.INTEGER,
+    difficulty: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Level',
     timestamps: false,
-});
-
-Level.belongsTo(Game,{
-    foreignKey:"gameId",
-    allowNull:false
-});
-
-module.exports = Level;
+    underscored: true,
+  });
+  return Level;
+};

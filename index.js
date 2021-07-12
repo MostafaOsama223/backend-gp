@@ -1,11 +1,10 @@
 require('dotenv').config();
-const sequelize = require('./Utils/database') ;
+const { sequelize, Doctor, Patient, Injury } = require('./Models');
+
 const express = require('express')
 const bodyparser = require('body-parser');
-const {createDoctor} = require('./Models/doctor');
-const {createPatient} = require('./Models/patient')
-const {createInjury} = require('./Models/injury')
 
+// sequelize.then(x => console.log(x.models))
 
 const app = express();
 app.use(bodyparser.urlencoded({extended:false}));
@@ -15,26 +14,27 @@ app.use(bodyparser.json());
 const port = 3000 ;
 const data =[] ;
 
-const server = app.listen(port , ()=>{
-    console.log(`server is connected on port :: ${port}`);
-})
+// const server = app.listen(port , ()=>{
+//     console.log(`server is connected on port :: ${port}`);
+// })
 
 app.post('/doctor',(req,res)=>{
    
     console.log("i recieved doctor data");
     res.send("recieved");
-    createDoctor(req.body);
+    Doctor.createDoctor(req.body);
 
 })
  app.post('/patient',(req,res)=>{
     console.log("i recieved patient data");
     res.send("recieved");
-    createPatient(req.body)
+    Patient.createPatient(req.body)
  })
 
  app.post('/injury',(req,res)=>{
      console.log("i recieved new injury data")
      res.send("recieved");
-     createInjury(req.body);
+     Injury.createInjury(req.body);
  })
 
+app.listen(port)
