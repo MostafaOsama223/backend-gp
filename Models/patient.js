@@ -77,10 +77,14 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       this.belongsTo(Doctor, {
-        foreignKey:"doctorId"
+        foreignKey: 
+        {
+          name:"doctorId",
+          allowNull:false
+        }
       })
       
-      // this.belongsToMany(Injury,{
+      //this.belongsToMany(Injury,{
       //   through:"PatientInjury",
       //   timestamps: false
       // })
@@ -99,12 +103,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    doctorId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    }
 }, {
-    freezeTableName: true,
+    freezeTableName: false,
     sequelize,
     modelName: 'Patient',
     timestamps: false,

@@ -63,8 +63,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       
     }, {
-      freezeTableName: true,
-      timestamps: false
+      freezeTableName: false,
+      timestamps: false,
+      sequelize
     });
 
 return Doctor ;    
