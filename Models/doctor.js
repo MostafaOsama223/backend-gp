@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require("../Utils/database")
+const sequelize = require("../Utils/database");
+
 
 const Doctor = sequelize.define('Doctor', {
     id: {
@@ -42,7 +43,31 @@ async function createDoctor( doctor ){
 async function getAllDoctors(){
     return await Doctor.findAll();
 }
+async function getDoctor(doctorId){
+    return await Doctor.findByPk(doctorId);
+}
 
+function deleteDoctor(id){
+    Doctor.destroy({
+        where: { id: id }
+       })
+}
+function updateDoctor( dr ){
+    const prameters ={};
+    Object.keys(dr).forEach(key => {
+        if(dr[key]!=='' && dr[key] !== null ){
+            prameters[key] =dr[key];
+        }
+    }) 
+
+    Doctor.update(
+        prameters
+        ,
+        { where: { id: dr.id } }
+      )
+}
 module.exports.Doctor = Doctor;
 module.exports.createDoctor = createDoctor;
-module.exports.getAllDoctors = getAllDoctors;
+module.exports.getDoctor = getDoctor;
+module.exports.deleteDoctor = deleteDoctor;
+module.exports.updateDoctor = updateDoctor;
