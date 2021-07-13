@@ -57,24 +57,53 @@ async function createPatient(patientI){
     
         })
     
-    //console.log("osama",patient);
-    let patient_ID = await getpatientId(patientI.phone)
-    console.log("The id of patient is : ", patient_ID);
-
+    //let patient_ID = await getpatientId(patientI.phone)
     sequelize.models.PatientInjury.create({
         InjuryId  : injury_ID ,
-        PatientId: patient_ID 
+        PatientId: patient.id 
     })
 }
 
+/*
 async function getpatientId(phone){
     let patient =  await Patient.findOne({ where: { phone: phone } });
     return patient.id
-}
+}*/
 async function getInjuryId(injury){
     let  injuryId = await Injury.findOne({ where: { name: injury } });
     return injuryId.id
 }
 
+async function getPatient(doctorId){
+    return await Patient.findByPk(doctorId);
+}
+
+function deletePatient(id){
+    Patient.destroy({
+        where: { id: id }
+       })
+}
+
+ 
+/* ---------------------------- patient update ---------------------- */
+function updatePatient( pt ){
+    const prameters ={};
+    Object.keys(pt).forEach(key => {
+        if(pt[key]!=''){
+            prameters[key] =pt[key];
+        }
+    }) 
+
+    Patient.update(
+        prameters
+        ,
+        { where: { id: pt.id } }
+      )
+}
+
+
 module.exports.Patient = Patient  ;
-module.exports.createPatient= createPatient ;
+module.exports.createPatient = createPatient ;
+module.exports.getPatient = getPatient ;
+module.exports.deletePatient = deletePatient ;
+module.exports.updatePatient= updatePatient ;
