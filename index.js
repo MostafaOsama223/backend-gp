@@ -17,15 +17,9 @@ app.use(bodyparser.json());
 // const doctorRouter = express.Router();
 // doctorRouter.use('/doctor');
 
-<<<<<<< HEAD
 const server = app.listen(port, () => {
     console.log(`server is connected on port :: ${port}`);
 })
-=======
-// const server = app.listen(port , ()=>{
-//     console.log(`server is connected on port :: ${port}`);
-// })
->>>>>>> parent of 9602642 (no changes)
 
 /*---------------------- Doctor request------------------- */
 app.post('/createDoctor',(req,res)=>{
@@ -56,13 +50,10 @@ app.post("/updateDoctor",(req,res)=>{
     res.send("updated done !");
 
 })
-<<<<<<< HEAD
 
 /*---------------------- patient  request------------------- */
  app.post('/createPatient',(req,res)=>{
-=======
  app.post('/patient',(req,res)=>{
->>>>>>> parent of 9602642 (no changes)
     console.log("i recieved patient data");
     createPatient(req.body);
     res.send("recieved");
@@ -89,19 +80,9 @@ app.post("/updatePatient",(req,res)=>{
     res.send("updated done !");
 })
 
-<<<<<<< HEAD
 /*---------------------- Injury  request------------------- */
 app.post('/injury',(req,res)=>{
     console.log("i recieved new injury data")
     res.send("recieved");
     Injury.createInjury(req.body);
  })
-=======
- app.post('/injury',(req,res)=>{
-     console.log("i recieved new injury data")
-     res.send("recieved");
-     Injury.createInjury(req.body);
- })
-
-app.listen(port)
->>>>>>> parent of 9602642 (no changes)

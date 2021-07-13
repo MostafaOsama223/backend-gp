@@ -17,14 +17,6 @@ let x = async function () {
     .catch (error => console.error('Unable to connect to the database:', error))
     return Promise.resolve(sequelize)
 
-<<<<<<< Updated upstream
-    sequelize.sync({
-        force: true
-    }).then(()=>{
-        console.log("database and tables created !")
-    })
-    //insertDummyData();
-=======
     
 
 }();
@@ -49,7 +41,6 @@ function initializeDB() {
         
         resolve("db initialized");
     });
->>>>>>> Stashed changes
 }
 
 function insertDummyData(){
