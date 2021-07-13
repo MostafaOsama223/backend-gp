@@ -25,7 +25,7 @@ function initializeDB() {
     });
 
     sequelize.sync({
-        force: true
+        alter: true
     }).then(()=>{
         console.log("database and tables created !")
     })
