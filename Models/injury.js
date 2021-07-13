@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
-     static createInjury( injury ){
+    static createInjury( injury ){
       this.create({
-          name : injury.name,
+          name : injury.name, 
       })
-  }
+    }
     static associate({ Game, Patient }) {
       // define association here
 
