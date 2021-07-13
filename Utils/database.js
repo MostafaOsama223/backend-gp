@@ -1,35 +1,44 @@
-const {
-    Sequelize
-} = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize('mysql://root:@localhost:3306/users', {
     logging: true
 });
+
 const path = require('path');
 const modelsPath = path.join(require('app-root-path').path, 'Models');
 
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log("db connected");
-        initializeDB();
-        console.log("db initialized")
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-})();
+let x = async function () {
+
+    await sequelize.authenticate();
+    console.log("db connected");
+    initializeDB()
+    // .then(console.log)
+    // .then(console.log(sequelize.models))
+    .catch (error => console.error('Unable to connect to the database:', error))
+    return Promise.resolve(sequelize)
+
+}();
 
 function initializeDB() {
-    require('fs').readdirSync(modelsPath).forEach(fileName => {
-        require(`${modelsPath}/${fileName}`);
-    });
+    return new Promise((resolve, reject) => {
+        require('fs').readdirSync(modelsPath).forEach(fileName => {
+            if(fileName.match("doctor.js") || fileName.match("patient.js")) {
+                // console.log(fileName);
+                const file  = require(`${modelsPath}/${fileName}`);
+                const filePromise = Object.entries(file).flat()[1];
+                console.log(fileName, filePromise);
+                filePromise.then(console.log(sequelize.models))
+            }
+        });
 
-    sequelize.sync({
-        force: false
-    }).then(()=>{
-        console.log("database and tables created !")
-    })
-    //insertDummyData();
+        sequelize.sync({
+            force: false
+        }).then(()=>{
+            console.log("database and tables created !")
+        })
+        // insertDummyData();  
+        resolve("db initialized");
+    });
 }
 
 function insertDummyData(){
@@ -164,4 +173,4 @@ function insertDummyData(){
     ])
 }
 
-module.exports = sequelize;
+module.exports = x

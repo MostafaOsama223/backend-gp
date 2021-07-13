@@ -1,10 +1,10 @@
 require('dotenv').config();
-const sequelize = require('./Utils/database') ;
-const express = require('express');
+const { sequelize, Doctor, Patient, Injury } = require('./Models');
+
+const express = require('express')
 const bodyparser = require('body-parser');
-const {createDoctor,getDoctor,deleteDoctor,updateDoctor}  = require('./Models/doctor');
-const {createPatient ,getPatient,deletePatient ,updatePatient} = require('./Models/patient');
-const {createInjury}  = require('./Models/injury');
+
+// sequelize.then(x => console.log(x.models))
 
 const app = express();
 const port = 3000;
@@ -25,12 +25,12 @@ const server = app.listen(port, () => {
 app.post('/createDoctor',(req,res)=>{
    
     console.log("i recieved doctor data");
-    createDoctor(req.body);
+    Doctor.createDoctor(req.body);
     res.send("recieved");
 })
 app.post("/getDoctor",(req,res)=>{
     console.log("i recieved request to search for a doctor");
-    getDoctor(req.body.id).then((data)=>{
+    Doctor.getDoctor(req.body.id).then((data)=>{
         console.log("DR   :" , data.name)
         console.log("DR   :" , data.id)
         console.log("DR   :" , data.phone)
@@ -41,24 +41,26 @@ app.post("/getDoctor",(req,res)=>{
 })
 app.post("/deleteDoctor",(req,res)=>{
     console.log("i recieved request to delete a doctor");
-    deleteDoctor(req.body.id);
+    Doctor.deleteDoctor(req.body.id);
     res.send("request done !")
 })
 app.post("/updateDoctor",(req,res)=>{
     console.log("i recieved request to update doctor data")
-    updateDoctor(req.body);
+    Doctor.updateDoctor(req.body);
     res.send("updated done !");
 
 })
+
 /*---------------------- patient  request------------------- */
  app.post('/createPatient',(req,res)=>{
     console.log("i recieved patient data");
     createPatient(req.body);
     res.send("recieved");
+    Patient.createPatient(req.body)
  })
  app.post("/getPatient",(req,res)=>{
     console.log("i recieved request to search for a Patient");
-    getPatient(req.body.id).then((data)=>{
+    Patient.getPatient(req.body.id).then((data)=>{
         console.log("DR   :" , data.name)
         console.log("DR   :" , data.id)
         console.log("DR   :" , data.phone)
@@ -68,18 +70,18 @@ app.post("/updateDoctor",(req,res)=>{
 })
 app.post("/deletePatient",(req,res)=>{
     console.log("i recieved request to delete a patient");
-    deletePatient(req.body.id);
+    Patient.deletePatient(req.body.id);
     res.send("request done !")
 })
 app.post("/updatePatient",(req,res)=>{
     console.log("i recieved request to update a patient data")
-    updatePatient(req.body);
+    Patient.updatePatient(req.body);
     res.send("updated done !");
 })
 
- /*---------------------- Injury  request------------------- */
- app.post('/injury',(req,res)=>{
-     console.log("i recieved new injury data");
-     createInjury(req.body);
-     res.send("recieved");
+/*---------------------- Injury  request------------------- */
+app.post('/injury',(req,res)=>{
+    console.log("i recieved new injury data")
+    res.send("recieved");
+    Injury.createInjury(req.body);
  })

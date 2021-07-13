@@ -1,38 +1,39 @@
-const sequelize = require('../Utils/database');
-const { DataTypes } = require('sequelize');
-const {Injury} = require('./Injury');
-const {Patient} = require('./patient')
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Game extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate({ Level, Injury, Patient }) {
+      // define association here
 
-const Game = sequelize.define('Game',{
-    id: {
-        type: DataTypes.SMALLINT,
-        primaryKey: true,
-        allowNull: false,
-        autoIncrement: true,
-    },
+      this.hasMany(Level, {
+        foreignKey: 'levelId'
+      })
 
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
+      this.belongsToMany(Injury, {
+        through: "GameInjury",
+        timestamps: false
+      })
 
-    url: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-},{
-    freezeTableName: true,
+      this.belongsToMany(Patient, {
+        through: "GamePatient",
+        timestamps: false
+      })
+    }
+  };
+  Game.init({
+    name: DataTypes.STRING,
+    url: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Game',
     timestamps: false,
-});
-
-Game.belongsToMany(Injury,{
-    through : "GameInjury",
-    timestamps: false
-});
-
-Game.belongsToMany(Patient,{
-    through : "GamePatient",
-    timestamps: false
-});
-
-module.exports = Game;
+  });
+  return Game;
+};

@@ -1,73 +1,71 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require("../Utils/database");
-
-
-const Doctor = sequelize.define('Doctor', {
-    id: {
-        type: DataTypes.SMALLINT,
-        autoIncrement: true,
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Doctor extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static async createDoctor( doctor ){    
+      await this.create({
+          name  : doctor.name ,
+          email : doctor.email,
+          phone : doctor.phone
+  
+      })   
+    }
+    static async  getAllDoctors(){
+      return await this.findAll();
+  }
+    static async  getDoctor(doctorId){
+      return await this.findByPk(doctorId);
+  }
+    static async deleteDoctor(id){
+      await this.destroy({
+          where: { id: id }
+      })
+  }
+    static async updateDoctor( dr ){
+      const prameters ={};
+      Object.keys(dr).forEach(key => {
+          if(dr[key]!=='' && dr[key] !== null ){
+              prameters[key] =dr[key];
+          }
+      }) 
+  
+      await this.update(
+          prameters
+          ,
+          { where: { id: dr.id } }
+        )
+  }
+    static associate({ Patient }) {
+      this.hasMany(Patient, {
+        foreignKey: 'doctorId',
+      })
+    }
+}
+    Doctor.init({
+      name: {
+        type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true
-    },
-
-    name: {
+      },
+      email: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-
-    phone: {
+      },
+      phone: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
+      },
+      
+    }, {
+      freezeTableName: true,
+      timestamps: false
+    });
 
-}, {
-    freezeTableName: true,
-    timestamps: false
-});
-
-async function createDoctor( doctor ){
-    await Doctor.create({
-        name  : doctor.name ,
-        email : doctor.email,
-        phone : doctor.phone
-
-    })
-    .then(Promise.resolve("tmaaaam"))
-}
-
-async function getAllDoctors(){
-    return await Doctor.findAll();
-}
-async function getDoctor(doctorId){
-    return await Doctor.findByPk(doctorId);
-}
-
-function deleteDoctor(id){
-    Doctor.destroy({
-        where: { id: id }
-       })
-}
-function updateDoctor( dr ){
-    const prameters ={};
-    Object.keys(dr).forEach(key => {
-        if(dr[key]!=='' && dr[key] !== null ){
-            prameters[key] =dr[key];
-        }
-    }) 
-
-    Doctor.update(
-        prameters
-        ,
-        { where: { id: dr.id } }
-      )
-}
-module.exports.Doctor = Doctor;
-module.exports.createDoctor = createDoctor;
-module.exports.getDoctor = getDoctor;
-module.exports.deleteDoctor = deleteDoctor;
-module.exports.updateDoctor = updateDoctor;
+return Doctor ;    
+};
