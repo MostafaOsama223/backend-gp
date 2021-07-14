@@ -24,10 +24,16 @@ module.exports = {
         allowNull: false,
       },
 
-      doctorId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      }
+      // doctor_id: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: false,
+      //   references: {
+      //     model: {
+      //       tableName: 'doctors',
+      //     },
+      //     key: 'id'
+      //   }
+      // }
 
     });
   },
