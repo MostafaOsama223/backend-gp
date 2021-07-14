@@ -31,12 +31,8 @@ app.post('/createDoctor',(req,res)=>{
 app.post("/getDoctor",(req,res)=>{
     console.log("i recieved request to search for a doctor");
     Doctor.getDoctor(req.body.id).then((data)=>{
-        console.log("DR   :" , data.name)
-        console.log("DR   :" , data.id)
-        console.log("DR   :" , data.phone)
         /* send data to front end to display it */
     })
-
     res.send("recieved")
 })
 app.post("/deleteDoctor",(req,res)=>{
@@ -53,7 +49,6 @@ app.post("/updateDoctor",(req,res)=>{
 
 /*---------------------- patient  request------------------- */
  app.post('/createPatient',(req,res)=>{
- app.post('/patient',(req,res)=>{
     console.log("i recieved patient data");
     createPatient(req.body);
     res.send("recieved");
