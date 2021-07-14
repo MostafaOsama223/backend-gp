@@ -3,8 +3,6 @@ const {
   Model
 } = require('sequelize');
 
-const Injury = require('./injury')
-console.log(Injury);
 module.exports = (sequelize, DataTypes) => {
   class Patient extends Model {
     /**
@@ -13,30 +11,38 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
-     static async createPatient(patientI){
-      let injury_ID = await Injury.findOne({ where: { name: "wawa" } }).id;
-          console.log("The type of injury is :", injury_ID);
-          const patient = await this.create({
-              name    : patientI.name ,
-              email   : patientI.email,
-              phone   : patientI.phone,
-              doctorId: patientI.doctorId
-          })
+  static associate({ PatientInjury, Doctor, Injury }) {
+
+    this.belongsToMany(Injury, { //DONE
+      through: PatientInjury
+    })
+    this.belongsTo(Doctor, { //DONE
+      foreignKey:{
+        name:"doctorId",
+        allowNull: false,
+      },
       
-      let patient_ID = await patient.id
-      console.log("The id of patient is : ", patient_ID);
-  
-      sequelize.models.PatientInjury.create({
-          InjuryId  : injury_ID ,
-          PatientId: patient_ID 
-      })
+    })
+
   }
 
-  static async getPatient(doctorId){
-    return await Patient.findByPk(doctorId);
+  static async add(patientI){
+    const patient = await this.create({
+      name    : patientI.name ,
+      email   : patientI.email,
+      phone   : patientI.phone,
+      doctorId: patientI.doctorId
+    });
+
+    return patient;
+  }
+
+  static async get(patientId){
+    const patient = await Patient.findByPk(patientId);
+    return patient;
   }
   
-  static async updatePatient( pt ){
+  static async update( pt ){
     const prameters ={};
     Object.keys(pt).forEach(key => {
         if(pt[key]!=''){
@@ -50,46 +56,15 @@ module.exports = (sequelize, DataTypes) => {
         { where: { id: pt.id } }
       )
   }
-  static async deletePatient(id){
-    await Patient.destroy({
-        where: { id: id }
-       })
+
+  static async delete(patientId){
+    const deletedPatient = await Patient.destroy({
+      where: { id: patientId }
+    })
+    return deletedPatient;
   }
-  static async  getPatient(doctorId){
-    return await Patient.findByPk(doctorId);
-  }
-  // async getpatientId(phone){
-  //     let patient =  await this.findOne({ where: { phone: phone } });
-  //     return patient.id
-  // }
-
-  // async getInjuryId(injury){
-  //     let  injuryId = await Injury.findOne({ where: { name: injury } });
-  //     return injuryId.id
-  // }
-
-    static associate({ Game, Doctor, Injury }) {
-      // define association here
-
-      this.belongsToMany(Game, {
-        through: "GamePatient",
-        timestamps: false
-      })
-
-      this.belongsTo(Doctor, {
-        foreignKey: 
-        {
-          name:"doctorId",
-          allowNull:false
-        }
-      })
-      
-      //this.belongsToMany(Injury,{
-      //   through:"PatientInjury",
-      //   timestamps: false
-      // })
-    }
   };
+
   Patient.init({
     name: {
       type: DataTypes.STRING,
