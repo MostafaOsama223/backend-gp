@@ -20,6 +20,12 @@ module.exports = {
       gameId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: {
+            tableName: 'games',
+          },
+          key: 'id'
+        }
       }
     });
   },

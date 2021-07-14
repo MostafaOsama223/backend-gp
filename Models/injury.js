@@ -10,12 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
-     static createInjury( injury ){
-      this.create({
-          name : injury.name,
+     static async createInjury( injury ){
+      const newInjury = await this.create({
+        name : injury.name,
       })
+      return newInjury
     }
-    static associate({ Game, Patient, PatientInjury }) {
+    static associate({ PatientInjury, Game, Patient }) {
       // define association here
 
       this.belongsToMany(Game, {

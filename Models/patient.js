@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     this.belongsToMany(Injury, { //DONE
       through: PatientInjury
     })
+    
     this.belongsTo(Doctor, { //DONE
       foreignKey:{
         name:"doctorId",
@@ -33,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       phone   : patientI.phone,
       doctorId: patientI.doctorId
     });
-
     return patient;
   }
 
@@ -42,19 +42,18 @@ module.exports = (sequelize, DataTypes) => {
     return patient;
   }
   
-  static async update( pt ){
-    const prameters ={};
-    Object.keys(pt).forEach(key => {
-        if(pt[key]!=''){
-            prameters[key] =pt[key];
+  static async modify( patient ){
+    const prameters = {};
+    Object.keys(patient).forEach(key => {
+        if(patient[key] != ''){
+            prameters[key] =patient[key];
         }
     }) 
 
-    await Patient.update(
-        prameters
-        ,
-        { where: { id: pt.id } }
-      )
+    const newPatient = await Patient.update(
+        prameters,
+        { where: { id: patient.id } })
+    return newPatient
   }
 
   static async delete(patientId){

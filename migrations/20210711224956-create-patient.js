@@ -24,9 +24,15 @@ module.exports = {
         allowNull: false,
       },
 
-      doctorId: {
+      doctor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: {
+            tableName: 'doctors',
+          },
+          key: 'id'
+        }
       }
 
     });
