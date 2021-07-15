@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false
         }
       })
-      this.hasMany(Progress,{
+      this.hasMany(Progress,{ //DONE
         foreignKey:{
           name:"levelId",
           allowNull:false

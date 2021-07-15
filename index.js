@@ -19,14 +19,14 @@ const main = async () => {
 		// 	url: 'o-positions-download.com'
 		// })
 		
-	const game1 = await Game.create({
-		name: 'cubes game',
-		url: 'cubes-download.com'
-	})
-	await Level.bulkCreate([
-		{ maxScore: 30, difficulty: "easy", gameId: game1.id },
-		{ maxScore: 50, difficulty: "medium", gameId: game1.id }
-	])
+	// const game1 = await Game.create({
+	// 	name: 'cubes game',
+	// 	url: 'cubes-download.com'
+	// })
+	// await Level.bulkCreate([
+	// 	{ maxScore: 30, difficulty: "easy", gameId: game1.id },
+	// 	{ maxScore: 50, difficulty: "medium", gameId: game1.id }
+	// ])
 
 	// const level = await Level.create({
 	// 	maxScore: 20, difficulty: "hard", gameId: game2.id
@@ -37,27 +37,32 @@ const main = async () => {
 	// console.log(game2);
 	// console.log(await level.getGame());
 
-	const doctor = await Doctor.create({
-		"name": "el doctor",
-		"email": "doctooor",
-		"phone": 1231
-	})
+	// const doctor = await Doctor.create({
+	// 	"name": "el doctor",
+	// 	"email": "doctooor",
+	// 	"phone": 1231
+	// })
 
-	const patient = await Patient.add({
-		"name": "salama",
-		"email": "salama@mostashfa.com",
-		"phone": 1221,
-		"doctorId": doctor.id
-	})
+	// const patient = await Patient.add({
+	// 	"name": "salama",
+	// 	"email": "salama@mostashfa.com",
+	// 	"phone": 1221,
+	// 	"doctorId": doctor.id
+	// })
 
-	const injury = await Injury.bulkCreate([
-		{name : "injury1"} ,
-		{name : "injury2"}
-	])
+	// const injury = await Injury.bulkCreate([
+	// 	{name : "injury1"} ,
+	// 	{name : "injury2"}
+	// ])
 
-	patient.addInjury(injury);
-	console.log(patient);
-	patient.addGame(game1)
+	// patient.addInjury(injury);
+	const patient = await Patient.findOne({
+		where: { id: 5},
+		include: [Game]
+	});
+
+	console.log(await patient.getGames());
+	// patient.addGame(game1)
 
 }
 
@@ -69,48 +74,33 @@ const server = app.listen(port, () => {
 
 //#region <GAME>
 app.get('/games', async (req, res) => {
-	var response = [];
-	var games = await Game.findAll();
-
-	for (let i = 0; i < games.length; i++) {
-		const game = games[i];
-		const levels = await game.getLevels();
-		await response.push({ game,  levels})
-	}
-	res.send(response)
+	var gamesDTO = await Game.findAll({
+		include: {
+			model: Level,
+			attributes: ['id']
+		}
+	})
+	res.send(gamesDTO)
 })
 //#endregion
 
 //#region <DOCTOR>
-app.post('/createDoctor',(req,res)=>{
-	console.log("i recieved doctor data");
-	Doctor.add(req.body);
-	res.send("recieved");
-})
-
-
-app.post("/getDoctor",(req,res)=>{
-	console.log("i recieved request to search for a doctor");
-	Doctor.get(req.body.id).then((data)=>{
-			console.log("DR   :" , data.name)
-			console.log("DR   :" , data.id)
-			console.log("DR   :" , data.phone)
-			/* send data to front end to display it */
+app.route('/doctor')
+	.all((req, res, next) => {
+		next()
 	})
-	res.send("recieved")
-})
-
-app.post("/deleteDoctor",(req,res)=>{
-	console.log("i recieved request to delete a doctor");
-	Doctor.delete(req.body.id);
-	res.send("request done !")
-})
-
-app.post("/updateDoctor",(req,res)=>{
-	console.log("i recieved request to update doctor data")
-	Doctor.update(req.body);
-	res.send("updated done !");
-})
+	.post(async(req, res)=>{
+		res.send(await Doctor.add(req.body));
+	})
+	.get(async(req, res)=>{
+		res.send(await Doctor.get(req.body.id));
+	})
+	.delete(async(req, res)=>{
+		res.send(await Doctor.delete(req.body.id))
+	})
+	.put(async(req, res)=>{
+		res.send(await Doctor.update(req.body));
+	})
 //#endregion
 
 //#region <PATIENT>
@@ -119,15 +109,24 @@ app.route('/patient')
 		next()
 	})
 	.post(async (req, res)=>{
-		const patient = await Patient.add(req.body);
+		let patient = await Patient.add(req.body);
 		const injury = await Injury.get(req.body.injuryId);
 		await patient.addInjury(injury);
 		res.send({ patient, injury});
 	})
 	.get(async (req,res)=>{
-		const patient = await Patient.get(req.query.id);
-		const injuries = await patient.getInjuries();
-    	res.json({ patient, injuries})
+		const patient = await Patient.findOne({
+			where: { id: req.query.id},
+			include: [{
+				model: Injury,
+				attributes: ['name'],
+				through:{
+					attributes:[]
+				},
+			}],
+			attributes: ['id', 'name']
+		});
+    	res.json(patient)
 	})
 	.delete(async (req,res)=>{
 		await PatientInjury.destroy({ where: { patientId: req.body.id }})
@@ -140,8 +139,16 @@ app.route('/patient')
 //#endregion
 
 //#region <INJURY>
+app.route('/injury')
+	.all((req,res,next)=>{
+		next()
+	})
+	.post(async(req,res)=>{
+		res.send(await Injury.create(req.body));
+	})
+/*
 app.post('/injury', async (req, res)=>{
 	console.log(req.body.injuryName);
 	res.send(await Injury.create(req.body));
-})
+})*/
 //#endregion
