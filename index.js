@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { sequelize, Doctor, Patient, Injury } = require('./Models');
+const { sequelize, Doctor, Patient, Injury, PatientInjury, Game, Level } = require('./Models');
 const express = require('express')
 const bodyparser = require('body-parser');
 
@@ -13,21 +13,29 @@ app.use(bodyparser.json());
 //#endregion
 
 const main = async () => {
-	const patient = await Patient.get(2);
-	const doctor = await patient.getDoctor();
-	// console.log(patient);
-	// console.log(doctor);
-	// console.log(await doctor.getPatients());
-	const injury = await Injury.get(4)
-	// console.log(injury);
-	patient.addInjury(injury);
-	// console.log(await injury.getPatients());
-	// const newPatient = await Patient.createPatient({
-	//     name: 'patient x',
-	//     email: 'www.com',
-	//     phone: 1234,
-	//     doctorId: await doctor.id
+	// const game1 = await Game.create({
+	// 	name: 'cubes game',
+	// 	url: 'cubes-download.com'
 	// })
+
+	// const game2 = await Game.create({
+	// 	name: 'o-positions game',
+	// 	url: 'o-positions-download.com'
+	// })
+
+	// await Level.bulkCreate([
+	// 	{ maxScore: 30, difficulty: "easy", gameId: game1.id },
+	// 	{ maxScore: 50, difficulty: "medium", gameId: game1.id }
+	// ])
+
+	// const level = await Level.create({
+	// 	maxScore: 20, difficulty: "hard", gameId: game2.id
+	// })
+
+	// console.log(game1);
+	// console.log(await game1.getLevels());
+	// console.log(game2);
+	// console.log(await level.getGame());
 }
 
 //main()
@@ -35,6 +43,20 @@ const main = async () => {
 const server = app.listen(port, () => {
 	console.log(`server is connected on port :: ${port}`);
 })
+
+//#region <GAME>
+app.get('/games', async (req, res) => {
+	var response = [];
+	var games = await Game.findAll();
+
+	for (let i = 0; i < games.length; i++) {
+		const game = games[i];
+		const levels = await game.getLevels();
+		await response.push({ game,  levels})
+	}
+	res.send(response)
+})
+//#endregion
 
 //#region <DOCTOR>
 app.post('/createDoctor',(req,res)=>{
@@ -73,7 +95,10 @@ app.route('/patient')
 		next()
 	})
 	.post(async (req, res)=>{
-		res.send(await Patient.add(req.body));
+		const patient = await Patient.add(req.body);
+		const injury = await Injury.get(req.body.injuryId);
+		await patient.addInjury(injury);
+		res.send({ patient, injury});
 	})
 	.get(async (req,res)=>{
 		const patient = await Patient.get(req.query.id);
@@ -81,13 +106,13 @@ app.route('/patient')
     	res.json({ patient, injuries})
 	})
 	.delete(async (req,res)=>{
-    	res.json(await Patient.delete(req.body.id))
+		await PatientInjury.destroy({ where: { patientId: req.body.id }})
+		const numOfDeletedRows = await Patient.delete(req.body.id);
+    	res.json(numOfDeletedRows)
 	})
-	// .put('/:patientId', (req,res)=>{
-	// 	console.log("i recieved request to update a patient data")
-	// 	Patient.update(req.body);
-	// 	res.send("updated done !");
-	// })
+	.put(async (req,res)=>{
+		res.send(await Patient.modify(req.body));
+	})
 //#endregion
 
 //#region <INJURY>

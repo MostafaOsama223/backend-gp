@@ -23,6 +23,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4e669078678f4c6fa273f3f6cc59a55df064017a
       doctor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

@@ -12,8 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Level, Injury, Patient }) {
       // define association here
 
-      this.hasMany(Level, {
-        foreignKey: 'levelId'
+      this.hasMany(Level, { //DONE
+        foreignKey: {
+          name: 'gameId',
+          allowNull: false
+        }
       })
 
       this.belongsToMany(Injury, {
@@ -21,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
       })
 
-      this.belongsToMany(Patient, {
+      this.belongsToMany(Patient, { //Done
         through: "GamePatient",
         timestamps: false
       })

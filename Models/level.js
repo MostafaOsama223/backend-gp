@@ -12,8 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Game }) {
       // define association here
 
-      this.belongsTo(Game, {
-        foreignKey:"gameId"
+      this.belongsTo(Game, { //DONE
+        foreignKey: {
+          name: "gameId",
+          allowNull: false
+        }
       })
     }
   };
@@ -24,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Level',
     timestamps: false,
-    underscored: true,
+    underscored: false,
   });
   return Level;
 };
