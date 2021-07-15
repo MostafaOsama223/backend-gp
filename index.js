@@ -61,7 +61,7 @@ const main = async () => {
 
 }
 
-main()
+//main()
 
 const server = app.listen(port, () => {
 	console.log(`server is connected on port :: ${port}`);
@@ -87,6 +87,7 @@ app.post('/createDoctor',(req,res)=>{
 	Doctor.add(req.body);
 	res.send("recieved");
 })
+
 
 app.post("/getDoctor",(req,res)=>{
 	console.log("i recieved request to search for a doctor");
