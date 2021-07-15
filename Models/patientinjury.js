@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({}) {
-      
+
     }
   };
   PatientInjury.init({
   }, {
-    sequelize,
+    sequelize , 
     modelName: 'PatientInjury',
     timestamps: false
   });
-  return PatientInjury;
+  return PatientInjury ;
 };

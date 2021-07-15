@@ -42,6 +42,7 @@ app.post('/createDoctor',(req,res)=>{
 	Doctor.add(req.body);
 	res.send("recieved");
 })
+
 app.post("/getDoctor",(req,res)=>{
 	console.log("i recieved request to search for a doctor");
 	Doctor.get(req.body.id).then((data)=>{
@@ -83,16 +84,15 @@ app.route('/patient')
     	res.json(await Patient.delete(req.body.id))
 	})
 	// .put('/:patientId', (req,res)=>{
-  //   console.log("i recieved request to update a patient data")
-  //   Patient.update(req.body);
-  //   res.send("updated done !");
+	// 	console.log("i recieved request to update a patient data")
+	// 	Patient.update(req.body);
+	// 	res.send("updated done !");
 	// })
 //#endregion
 
-/*---------------------- Injury  request------------------- */
+//#region <INJURY>
 app.post('/injury', async (req, res)=>{
-    console.log("i recieved new injury data")
 	console.log(req.body.injuryName);
 	res.send(await Injury.create(req.body));
 })
-
+//#endregion
