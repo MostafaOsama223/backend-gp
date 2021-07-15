@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ PatientInjury, Game, Patient }) {
       // define association here
 
-      this.belongsToMany(Game, {
+      this.belongsToMany(Game, { //Done
         through: "GameInjury",
         timestamps: false
       })

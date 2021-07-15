@@ -1,24 +1,14 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Progresses', {
+    await queryInterface.createTable('gamepatients', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
-      score: {
-        type: Sequelize.SMALLINT,
-        allowNull: false,
-      },
-
-      timeSpent: {
-        type: Sequelize.TIME,
-        allowNull: false,
-      },
-      patientId:{
+      patientId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -28,19 +18,19 @@ module.exports = {
           key: 'id'
         }
       },
-      levelId:{
-        type:Sequelize.SMALLINT,
-        allowNull:false,
-        references:{
-          model:{
-            tableName:"levels"
+      gameId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'games',
           },
-          key:"id"
+          key: 'id'
         }
       }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Progresses');
+    await queryInterface.dropTable('gamepatients');
   }
 };

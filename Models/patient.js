@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
-  static associate({ PatientInjury, Doctor, Injury }) {
+  static associate({ PatientInjury, Doctor, Injury, Game ,Progress }) {
 
     this.belongsToMany(Injury, { //DONE
       through: PatientInjury
@@ -22,11 +22,16 @@ module.exports = (sequelize, DataTypes) => {
         name:"doctorId",
         allowNull: false,
       },
-      
     })
     this.belongsToMany(Game,{ //Done
       through: "GamePatient",
       timestamps: false
+    })
+    this.hasMany(Progress,{
+      foreignKey:{
+        name:"patientId",
+        allowNull:false
+      }
     })
 
   }

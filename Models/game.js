@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       })
 
-      this.belongsToMany(Injury, {
+      this.belongsToMany(Injury, { //Done
         through: "GameInjury",
         timestamps: false
       })

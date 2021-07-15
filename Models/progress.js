@@ -9,8 +9,20 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({Patient , Level}) {
       // define association here
+      this.belongsTo(Patient,{
+        foreignKey:{
+          name:"patientId",
+          allowNull:false
+        }
+      })
+      this.belongsTo(Level,{
+        foreignKey:{
+          name:"levelId",
+          allowNull:false
+        }
+      })
     }
   };
   Progress.init({

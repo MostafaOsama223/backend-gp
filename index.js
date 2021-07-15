@@ -13,20 +13,20 @@ app.use(bodyparser.json());
 //#endregion
 
 const main = async () => {
-	// const game1 = await Game.create({
-	// 	name: 'cubes game',
-	// 	url: 'cubes-download.com'
-	// })
-
+	
 	// const game2 = await Game.create({
-	// 	name: 'o-positions game',
-	// 	url: 'o-positions-download.com'
-	// })
-
-	// await Level.bulkCreate([
-	// 	{ maxScore: 30, difficulty: "easy", gameId: game1.id },
-	// 	{ maxScore: 50, difficulty: "medium", gameId: game1.id }
-	// ])
+		// 	name: 'o-positions game',
+		// 	url: 'o-positions-download.com'
+		// })
+		
+	const game1 = await Game.create({
+		name: 'cubes game',
+		url: 'cubes-download.com'
+	})
+	await Level.bulkCreate([
+		{ maxScore: 30, difficulty: "easy", gameId: game1.id },
+		{ maxScore: 50, difficulty: "medium", gameId: game1.id }
+	])
 
 	// const level = await Level.create({
 	// 	maxScore: 20, difficulty: "hard", gameId: game2.id
@@ -36,9 +36,32 @@ const main = async () => {
 	// console.log(await game1.getLevels());
 	// console.log(game2);
 	// console.log(await level.getGame());
+
+	const doctor = await Doctor.create({
+		"name": "el doctor",
+		"email": "doctooor",
+		"phone": 1231
+	})
+
+	const patient = await Patient.add({
+		"name": "salama",
+		"email": "salama@mostashfa.com",
+		"phone": 1221,
+		"doctorId": doctor.id
+	})
+
+	const injury = await Injury.bulkCreate([
+		{name : "injury1"} ,
+		{name : "injury2"}
+	])
+
+	patient.addInjury(injury);
+	console.log(patient);
+	patient.addGame(game1)
+
 }
 
-//main()
+main()
 
 const server = app.listen(port, () => {
 	console.log(`server is connected on port :: ${port}`);
