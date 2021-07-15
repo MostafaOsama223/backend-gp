@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { sequelize, Doctor, Patient, Injury, PatientInjury, Game, Level } = require('./Models');
+const { sequelize, Doctor, Patient, Injury, PatientInjury, Game, Level ,Progress } = require('./Models');
 const express = require('express')
 const bodyparser = require('body-parser');
 
@@ -14,54 +14,56 @@ app.use(bodyparser.json());
 
 const main = async () => {
 	
-	// const game2 = await Game.create({
-		// 	name: 'o-positions game',
-		// 	url: 'o-positions-download.com'
-		// })
+	 const game2 = await Game.create({
+			name: 'o-positions game',
+			url: 'o-positions-download.com'
+	 })
 		
-	// const game1 = await Game.create({
-	// 	name: 'cubes game',
-	// 	url: 'cubes-download.com'
-	// })
-	// await Level.bulkCreate([
-	// 	{ maxScore: 30, difficulty: "easy", gameId: game1.id },
-	// 	{ maxScore: 50, difficulty: "medium", gameId: game1.id }
-	// ])
+	 const game1 = await Game.create({
+	 	name: 'cubes game',
+	 	url: 'cubes-download.com'
+	 })
+	 await Level.bulkCreate([
+	 	{ maxScore: 30, difficulty: "easy", gameId: game1.id },
+	 	{ maxScore: 50, difficulty: "medium", gameId: game1.id }
+	 ])
 
-	// const level = await Level.create({
-	// 	maxScore: 20, difficulty: "hard", gameId: game2.id
-	// })
+
+	const level = await Level.create({
+	 	maxScore: 20, difficulty: "hard", gameId: game2.id
+	 })
 
 	// console.log(game1);
 	// console.log(await game1.getLevels());
 	// console.log(game2);
 	// console.log(await level.getGame());
 
-	// const doctor = await Doctor.create({
-	// 	"name": "el doctor",
-	// 	"email": "doctooor",
-	// 	"phone": 1231
-	// })
+	 const doctor = await Doctor.create({
+	 	"name": "el doctor",
+	 	"email": "doctooor",
+	 	"phone": 1231
+	 })
 
-	// const patient = await Patient.add({
-	// 	"name": "salama",
-	// 	"email": "salama@mostashfa.com",
-	// 	"phone": 1221,
-	// 	"doctorId": doctor.id
-	// })
+	 const patient = await Patient.add({
+	 	"name": "salama",
+	 	"email": "salama@mostashfa.com",
+	 	"phone": 1221,
+	 	"doctorId": doctor.id
+	 })
 
-	// const injury = await Injury.bulkCreate([
-	// 	{name : "injury1"} ,
-	// 	{name : "injury2"}
-	// ])
+	 const injury = await Injury.bulkCreate([
+	 	{name : "injury1"} ,
+	 	{name : "injury2"}
+	 ])
 
-	// patient.addInjury(injury);
-	const patient = await Patient.findOne({
+	 patient.addInjury(injury);
+
+	/*const patient = await Patient.findOne({
 		where: { id: 5},
 		include: [Game]
-	});
+	});*/
 
-	console.log(await patient.getGames());
+	//console.log(await patient.getGames());
 	// patient.addGame(game1)
 
 }
@@ -146,6 +148,17 @@ app.route('/injury')
 	.post(async(req,res)=>{
 		res.send(await Injury.create(req.body));
 	})
+//#endregion
+
+//#region
+app.route('/progress')
+	.all((req,res,next)=>{
+		next()
+	})
+	.post(async (req,res)=>{
+		res.send( await Progress.add(req.body));
+	})
+//#endregion
 /*
 app.post('/injury', async (req, res)=>{
 	console.log(req.body.injuryName);

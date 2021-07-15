@@ -24,6 +24,15 @@ module.exports = (sequelize, DataTypes) => {
         }
       })
     }
+    static async add(progress){
+      const progressData = await Progress.create({
+        "score" : progress.score,
+        "time Spent" : progress.timeSpent,
+        "patientId" : progress.patientId,
+        "levelId" : progress.levelId
+      })
+      return progressData ;
+    }
   };
   Progress.init({
     score: DataTypes.SMALLINT,
