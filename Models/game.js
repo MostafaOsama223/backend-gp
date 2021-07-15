@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
       })
 
-      this.belongsToMany(Patient, {
+      this.belongsToMany(Patient, { //DONE
         through: "GamePatient",
         timestamps: false
       })

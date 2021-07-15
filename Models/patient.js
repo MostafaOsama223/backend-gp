@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
-  static associate({ PatientInjury, Doctor, Injury }) {
+  static associate({ PatientInjury, Doctor, Injury, Game }) {
 
     this.belongsToMany(Injury, { //DONE
       through: PatientInjury
@@ -22,9 +22,12 @@ module.exports = (sequelize, DataTypes) => {
         name:"doctorId",
         allowNull: false,
       },
-      
     })
 
+    this.belongsToMany(Game, { //DONE
+      through: "GamePatient",
+      timestamps: false
+    })
   }
 
   static async add(patientI){
