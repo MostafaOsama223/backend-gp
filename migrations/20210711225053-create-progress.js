@@ -8,7 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
       score: {
         type: Sequelize.SMALLINT,
         allowNull: false,
@@ -17,6 +16,11 @@ module.exports = {
       timeSpent: {
         type: Sequelize.TIME,
         allowNull: false,
+      },
+      difficulty: {
+        type: Sequelize.STRING,
+        values: ['easy', 'medium', 'hard'],
+        allowNull: false,  
       },
       patientId:{
         type: Sequelize.INTEGER,

@@ -37,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   Progress.init({
     score: DataTypes.SMALLINT,
-    timeSpent: DataTypes.TIME
+    timeSpent: DataTypes.TIME,
+    difficulty:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Progress',

@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
   };
   Level.init({
     maxScore: DataTypes.INTEGER,
-    difficulty: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Level',

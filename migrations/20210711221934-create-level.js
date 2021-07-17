@@ -12,11 +12,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      difficulty: {
-        type: Sequelize.STRING,
-        values: ['easy', 'medium', 'hard'],
-        allowNull: false,  
-      },
       gameId: {
         type: Sequelize.INTEGER,
         allowNull: false,
