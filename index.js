@@ -74,15 +74,31 @@ const server = app.listen(port, () => {
 	console.log(`server is connected on port :: ${port}`);
 })
 
+
+app.post('/validate',async(req,res)=>{
+	const patient = await Patient.findOne({
+		where:{
+			name : req.body.name,
+			email : req.body.email
+		},attributes:[
+			"id"
+		]
+	})
+	res.send(patient) ;
+})
+
 //#region <GAME>
+//let data = [];
 app.get('/games', async (req, res) => {
-	var gamesDTO = await Game.findAll({
+	var data = await Game.findAll({
 		include: {
 			model: Level,
 			attributes: ['id']
-		}
+		},attributes:["id","name"]
 	})
-	res.send(gamesDTO)
+	//data.push(gamesDTO);
+	console.log(data);
+	res.send({data})
 })
 //#endregion
 
@@ -131,12 +147,20 @@ app.route('/patient')
     	res.json(patient)
 	})
 	.delete(async (req,res)=>{
-		await PatientInjury.destroy({ where: { patientId: req.body.id }})
-		const numOfDeletedRows = await Patient.delete(req.body.id);
-    	res.json(numOfDeletedRows)
+		try{
+			await PatientInjury.destroy({ where: { patientId: req.body.id }})
+			const numOfDeletedRows = await Patient.delete(req.body.id);
+			res.json(numOfDeletedRows)
+		}catch(error){
+			res.send(400)
+		}
 	})
 	.put(async (req,res)=>{
-		res.send(await Patient.modify(req.body));
+		try{
+			res.send(await Patient.modify(req.body));
+		}catch(error){
+			res.send(400)
+		}
 	})
 //#endregion
 
@@ -146,7 +170,11 @@ app.route('/injury')
 		next()
 	})
 	.post(async(req,res)=>{
-		res.send(await Injury.create(req.body));
+		try{ 
+			res.send(await Injury.create(req.body));
+		}catch(error){
+			res.send(400)
+		}
 	})
 //#endregion
 
@@ -156,7 +184,13 @@ app.route('/progress')
 		next()
 	})
 	.post(async (req,res)=>{
-		res.send( await Progress.add(req.body));
+		try{
+			const progress = await Progress.add(req.body)
+			//res.sendStatus(200); /* ok */
+			res.send(status);
+		}catch(error){
+			res.send(400);
+		}
 	})
 //#endregion
 /*

@@ -86,6 +86,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    password:{
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
 }, {
     freezeTableName: false,
     sequelize,

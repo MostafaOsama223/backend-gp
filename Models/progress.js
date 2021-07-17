@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
     static async add(progress){
+      console.log(progress);
       const progressData = await Progress.create({
         "score" : progress.score,
         "time Spent" : progress.timeSpent,
