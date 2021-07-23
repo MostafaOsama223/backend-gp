@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { sequelize, Doctor, Patient, Injury, PatientInjury, Game, Level ,Progress } = require('./Models');
+const { Sequelize, sequelize, Doctor, Patient, Injury, PatientInjury, Game, Level ,Progress } = require('./Models');
 const express = require('express')
 const bodyparser = require('body-parser');
 
@@ -10,6 +10,7 @@ const port = 3000;
 //#region <MIDDLEWARES>
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+app.use(require('cors')())
 //#endregion
 
 const main = async () => {
@@ -121,6 +122,14 @@ app.route('/doctor')
 	})
 //#endregion
 
+app.get('/login', async (req, res) => {
+	res.status(200).send(req.query.email)
+})
+
+app.get('/allpatients', async (req, res) => {
+	res.status(200).send(await Patient.findAll())
+})
+
 //#region <PATIENT>
 app.route('/patient')
 	.all((req, res, next) => {
@@ -142,9 +151,14 @@ app.route('/patient')
 					attributes:[]
 				},
 			}],
-			attributes: ['id', 'name']
+			attributes: ['name'],
 		});
-    	res.json(patient)
+		const progress = await Progress.findAll({
+			where: {
+				patientId: { [Sequelize.Op.eq]: req.query.id}
+			}
+		});
+    	res.status(200).send(progress)
 	})
 	.delete(async (req,res)=>{
 		try{

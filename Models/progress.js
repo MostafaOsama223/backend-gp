@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Progress',
     timestamps: false,
-    underscored: true,
+    underscored: false,
   });
   return Progress;
 };
